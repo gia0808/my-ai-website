@@ -2,19 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Free Chatbot</title>
+  <title>SmartGLC</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 40px; background: #eef2f7; color: #222; }
-    h1 { color: #0077cc; }
-    #chatbox { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; background: #fff; }
-    #userInput { width: 70%; padding: 10px; font-size: 16px; }
-    #sendBtn { padding: 10px 20px; font-size: 16px; }
-    .user-msg { color: blue; margin: 5px 0; }
-    .bot-msg { color: green; margin: 5px 0; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #4B2E05; /* dark brown */
+      color: #BEE7FF; /* baby blue text */
+    }
+    h1 {
+      color: #BEE7FF;
+      text-align: center;
+      font-size: 3em;
+      margin-bottom: 30px;
+      font-weight: bold;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-shadow: 1px 1px 4px #1A1A1A;
+    }
+    #chatbox {
+      border: 2px solid #BEE7FF;
+      border-radius: 10px;
+      padding: 15px;
+      height: 350px;
+      overflow-y: auto;
+      background: #3A1F00; /* slightly lighter dark brown */
+      box-shadow: 0 0 15px #BEE7FFAA;
+    }
+    #userInput {
+      width: 70%;
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 2px solid #BEE7FF;
+      background: #5B3B06;
+      color: #BEE7FF;
+      outline: none;
+      margin-right: 10px;
+    }
+    #userInput::placeholder {
+      color: #C7E0FF;
+    }
+    #sendBtn {
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      background: #9CD8FF;
+      color: #4B2E05;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 8px #9CD8FFAA;
+      transition: background 0.3s ease;
+    }
+    #sendBtn:hover {
+      background: #B4E1FF;
+    }
+    .user-msg {
+      color: #9CD8FF;
+      margin: 5px 0;
+      font-weight: 600;
+    }
+    .bot-msg {
+      color: #C7E0FF;
+      margin: 5px 0;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
-  <h1>My Free Chatbot</h1>
+  <h1>SmartGLC</h1>
   <div id="chatbox"></div>
   <input type="text" id="userInput" placeholder="Say something..." />
   <button id="sendBtn">Send</button>
@@ -24,7 +80,6 @@
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
 
-    // Simple responses based on keywords
     function getBotResponse(message) {
       const msg = message.toLowerCase();
 
@@ -33,7 +88,7 @@
       } else if (msg.includes('how are you')) {
         return "I'm just a simple chatbot, but I'm doing great!";
       } else if (msg.includes('your name')) {
-        return "I'm your free chatbot!";
+        return "I'm SmartGLC, your free chatbot!";
       } else if (msg.includes('help')) {
         return "Sure! Ask me anything or just say hi.";
       } else {
@@ -54,11 +109,10 @@
       if (!userText) return;
       appendMessage("You: " + userText, 'user-msg');
       const botReply = getBotResponse(userText);
-      appendMessage("Bot: " + botReply, 'bot-msg');
+      appendMessage("SmartGLC: " + botReply, 'bot-msg');
       userInput.value = '';
     };
 
-    // Allow Enter key to send message
     userInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         sendBtn.click();
