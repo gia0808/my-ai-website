@@ -81,7 +81,20 @@
     const sendBtn = document.getElementById('sendBtn');
 
     function getBotResponse(message) {
-      const msg = message.toLowerCase();
+      const msg = message.toLowerCase().trim();
+
+      // Simple math detection: allow digits, spaces, and math operators only
+      const mathRegex = /^[0-9+\-*/().\s]+$/;
+      if (mathRegex.test(msg)) {
+        try {
+          const answer = eval(msg);
+          if (answer !== undefined) {
+            return `The answer is ${answer}`;
+          }
+        } catch {
+          return "Sorry, I couldn't calculate that.";
+        }
+      }
 
       if (msg.includes('hello') || msg.includes('hi')) {
         return "Hello! How can I help you today?";
