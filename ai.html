@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My AI Website</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f0f4f8; color: #333; }
+    h1 { color: #0077cc; }
+    #chat { margin-top: 20px; }
+    input, button { padding: 10px; font-size: 16px; }
+    input { width: 300px; }
+    #response { margin-top: 20px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to My AI Website!</h1>
+  <p>Type your question and click “Ask AI”.</p>
+
+  <input type="text" id="question" placeholder="Ask me anything..." />
+  <button id="askBtn">Ask AI</button>
+
+  <div id="response"></div>
+
+  <script>
+    const askBtn = document.getElementById('askBtn');
+    const questionInput = document.getElementById('question');
+    const responseDiv = document.getElementById('response');
+
+    askBtn.onclick = () => {
+      const question = questionInput.value.trim();
+      if (!question) {
+        alert('Please type a question!');
+        return;
+      }
+      responseDiv.textContent = 'AI is thinking... (not connected yet)';
+      // Here, later, we’ll add code to talk to OpenAI API
+    };
+  </script>
+</body>
+</html>
