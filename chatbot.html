@@ -2,134 +2,148 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SmartGLC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>N3RVO</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      background: #000000; /* black */
-      color: #FFD700; /* gold text */
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #000;
+      color: #f0c040;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
     }
-    h1 {
-      color: #FFD700;
+
+    header {
+      background-color: #111;
+      width: 100%;
+      padding: 1rem;
       text-align: center;
-      font-size: 3em;
-      margin-bottom: 30px;
+      font-size: 2rem;
       font-weight: bold;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-shadow: 0 0 8px #FFD700;
+      border-bottom: 2px solid #f0c040;
     }
-    #chatbox {
-      border: 2px solid #FFD700;
-      border-radius: 10px;
-      padding: 15px;
-      height: 350px;
+
+    .chatbox {
+      flex: 1;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
       overflow-y: auto;
-      background: #1a1a1a; /* dark gray for chatbox background */
-      box-shadow: 0 0 15px #FFD700AA;
+      box-sizing: border-box;
     }
-    #userInput {
-      width: 70%;
-      padding: 12px;
-      font-size: 18px;
-      border-radius: 8px;
-      border: 2px solid #FFD700;
-      background: #333333;
-      color: #FFD700;
-      outline: none;
-      margin-right: 10px;
+
+    .message {
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border-radius: 12px;
+      background-color: #222;
+      max-width: 80%;
     }
-    #userInput::placeholder {
-      color: #ffeb7a;
+
+    .user {
+      align-self: flex-end;
+      background-color: #f0c040;
+      color: #000;
     }
-    #sendBtn {
-      padding: 12px 25px;
-      font-size: 18px;
-      border-radius: 8px;
+
+    .bot {
+      align-self: flex-start;
+      border: 1px solid #f0c040;
+    }
+
+    form {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      padding: 1rem;
+      box-sizing: border-box;
+      background-color: #111;
+      border-top: 2px solid #f0c040;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.75rem;
       border: none;
-      background: #FFD700;
-      color: #000000;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.75rem 1rem;
+      margin-left: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #f0c040;
+      color: #000;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 8px #FFD700AA;
-      transition: background 0.3s ease;
     }
-    #sendBtn:hover {
-      background: #ffea00;
-    }
-    .user-msg {
-      color: #ffdd55;
-      margin: 5px 0;
-      font-weight: 600;
-    }
-    .bot-msg {
-      color: #fff3b0;
-      margin: 5px 0;
-      font-style: italic;
+
+    button:hover {
+      background-color: #d4a530;
     }
   </style>
 </head>
 <body>
-  <h1>SmartGLC</h1>
-  <div id="chatbox"></div>
-  <input type="text" id="userInput" placeholder="Say something..." />
-  <button id="sendBtn">Send</button>
+  <header>N3RVO</header>
+
+  <div class="chatbox" id="chatbox">
+    <div class="message bot">Hello, I’m N3RVO — your intelligent assistant. How can I help you today?</div>
+  </div>
+
+  <form id="chat-form">
+    <input type="text" id="user-input" placeholder="Ask me anything..." required />
+    <button type="submit">Send</button>
+  </form>
 
   <script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('user-input');
     const chatbox = document.getElementById('chatbox');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
 
-    function getBotResponse(message) {
-      const msg = message.toLowerCase().trim();
-
-      // Simple math detection: allow digits, spaces, and math operators only
-      const mathRegex = /^[0-9+\-*/().\s]+$/;
-      if (mathRegex.test(msg)) {
-        try {
-          const answer = eval(msg);
-          if (answer !== undefined) {
-            return `The answer is ${answer}`;
-          }
-        } catch {
-          return "Sorry, I couldn't calculate that.";
-        }
-      }
-
-      if (msg.includes('hello') || msg.includes('hi')) {
-        return "Hello! How can I help you today?";
-      } else if (msg.includes('how are you')) {
-        return "I'm just a simple chatbot, but I'm doing great!";
-      } else if (msg.includes('your name')) {
-        return "I'm SmartGLC, your free chatbot!";
-      } else if (msg.includes('help')) {
-        return "Sure! Ask me anything or just say hi.";
-      } else {
-        return "Sorry, I don't understand that yet.";
-      }
-    }
-
-    function appendMessage(text, className) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = className;
-      msgDiv.textContent = text;
-      chatbox.appendChild(msgDiv);
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.className = `message ${sender}`;
+      msg.textContent = text;
+      chatbox.appendChild(msg);
       chatbox.scrollTop = chatbox.scrollHeight;
     }
 
-    sendBtn.onclick = () => {
-      const userText = userInput.value.trim();
-      if (!userText) return;
-      appendMessage("You: " + userText, 'user-msg');
-      const botReply = getBotResponse(userText);
-      appendMessage("SmartGLC: " + botReply, 'bot-msg');
-      userInput.value = '';
-    };
-
-    userInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        sendBtn.click();
+    function smartBotReply(message) {
+      message = message.toLowerCase();
+      if (message.includes("hello") || message.includes("hi")) {
+        return "Hello. How can I assist you?";
+      } else if (message.includes("who are you")) {
+        return "I am N3RVO — a browser-based AI assistant created to help and respond intelligently.";
+      } else if (message.includes("2+2")) {
+        return "2 + 2 = 4";
+      } else if (message.match(/^\d+\s*[\+\-\*\/]\s*\d+$/)) {
+        try {
+          return eval(message).toString();
+        } catch {
+          return "That looks like a math problem, but I couldn’t solve it.";
+        }
+      } else {
+        return "I'm still learning. Please ask something simple or try rephrasing.";
       }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userText = input.value;
+      addMessage(userText, 'user');
+      const reply = smartBotReply(userText);
+      setTimeout(() => {
+        addMessage(reply, 'bot');
+      }, 500);
+      input.value = '';
     });
   </script>
 </body>
