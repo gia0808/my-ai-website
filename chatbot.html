@@ -2,144 +2,149 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>N3RVO</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #000;
+      color: #f0c040;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #111;
+      width: 100%;
+      padding: 1rem;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      border-bottom: 2px solid #f0c040;
+    }
+
+    .chatbox {
+      flex: 1;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .message {
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border-radius: 12px;
+      background-color: #222;
+      max-width: 80%;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #f0c040;
+      color: #000;
+    }
+
+    .bot {
+      align-self: flex-start;
+      border: 1px solid #f0c040;
+    }
+
+    form {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      padding: 1rem;
+      box-sizing: border-box;
+      background-color: #111;
+      border-top: 2px solid #f0c040;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.75rem 1rem;
+      margin-left: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #f0c040;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #d4a530;
+    }
+  </style>
 </head>
 <body>
-  <div class="chat-container">
-    <h1 class="title">N3RVO</h1>
-    <div class="chat-box" id="chat-box"></div>
-    <div class="input-container">
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
+  <header>N3RVO</header>
+
+  <div class="chatbox" id="chatbox">
+    <div class="message bot">Hello, I’m N3RVO — your intelligent assistant. How can I help you today?</div>
   </div>
 
-  <script src="ai.js"></script>
+  <form id="chat-form">
+    <input type="text" id="user-input" placeholder="Ask me anything..." required />
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('user-input');
+    const chatbox = document.getElementById('chatbox');
+
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.className = `message ${sender}`;
+      msg.textContent = text;
+      chatbox.appendChild(msg);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function smartBotReply(message) {
+      message = message.toLowerCase();
+      if (message.includes("hello") || message.includes("hi")) {
+        return "Hello. How can I assist you?";
+      } else if (message.includes("who are you")) {
+        return "I am N3RVO — a browser-based AI assistant created to help and respond intelligently.";
+      } else if (message.includes("2+2")) {
+        return "2 + 2 = 4";
+      } else if (message.match(/^\d+\s*[\+\-\*\/]\s*\d+$/)) {
+        try {
+          return eval(message).toString();
+        } catch {
+          return "That looks like a math problem, but I couldn’t solve it.";
+        }
+      } else {
+        return "I'm still learning. Please ask something simple or try rephrasing.";
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userText = input.value;
+      addMessage(userText, 'user');
+      const reply = smartBotReply(userText);
+      setTimeout(() => {
+        addMessage(reply, 'bot');
+      }, 500);
+      input.value = '';
+    });
+  </script>
 </body>
 </html>
-body {
-  background-color: #000;
-  color: gold;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.chat-container {
-  max-width: 600px;
-  margin: 60px auto;
-  background-color: #111;
-  border: 2px solid gold;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 15px gold;
-}
-
-.title {
-  text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 20px;
-  color: gold;
-}
-
-.chat-box {
-  background-color: #1a1a1a;
-  height: 300px;
-  overflow-y: auto;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
-
-.chat-message {
-  margin: 10px 0;
-}
-
-.user {
-  text-align: right;
-  color: #fff;
-}
-
-.bot {
-  text-align: left;
-  color: gold;
-}
-
-.input-container {
-  display: flex;
-  gap: 10px;
-}
-
-input[type="text"] {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1em;
-  background-color: #222;
-  color: white;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: gold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #000;
-}
-
-button:hover {
-  background-color: #ffd700;
-}
-function getBotResponse(input) {
-  input = input.toLowerCase();
-
-  if (input.includes("who created you")) {
-    return "Gia Chhabra created me.";
-  }
-
-  if (input.includes("what's your name") || input.includes("what is your name")) {
-    return "My name is N3RVO.";
-  }
-
-  if (input.includes("hello") || input.includes("hi")) {
-    return "Hello. How can I help you today?";
-  }
-
-  if (input.includes("how are you")) {
-    return "I'm functioning optimally, thank you for asking.";
-  }
-
-  if (input.includes("bye")) {
-    return "Goodbye. I'm always here if you need me.";
-  }
-
-  return "I'm still learning. Try asking me something else.";
-}
-
-function sendMessage() {
-  const userInput = document.getElementById("user-input").value;
-  if (userInput.trim() === "") return;
-
-  const chatBox = document.getElementById("chat-box");
-
-  // User message
-  const userMessage = document.createElement("div");
-  userMessage.className = "chat-message user";
-  userMessage.textContent = userInput;
-  chatBox.appendChild(userMessage);
-
-  // Bot response
-  const botResponse = document.createElement("div");
-  botResponse.className = "chat-message bot";
-  botResponse.textContent = getBotResponse(userInput);
-  chatBox.appendChild(botResponse);
-
-  // Clear input and scroll
-  document.getElementById("user-input").value = "";
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
